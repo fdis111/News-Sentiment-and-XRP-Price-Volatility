@@ -629,6 +629,56 @@ across 28 stages. Blast radius: cells 71, 105, 201 substantive; the rest timing 
 
 ---
 
+## W5 — not undertaken (deliberate)
+
+Skipped by decision. W5 called for a manually labelled headline sample, and labels generated
+by a model would not be ground truth — they would be another instrument's output presented as
+the thing used to validate instruments. Describing those as manual labelling in a submission
+would misrepresent them. If this is picked up later, the labels must be the author's.
+
+---
+
+## Final verification pass
+
+Run after W4, on the committed state.
+
+| Check | Result |
+|---|---|
+| Fresh-kernel execution | **clean, 23.8 s**, all 103 code cells, no errors |
+| Executed with `NEWS_API_KEY` / `GITHUB_TOKEN` unset and outbound sockets blocked | **passes — zero outbound connection attempts** |
+| Offline guard self-test (proves the guard works) | blocked 5 connections to `api.kraken.com` |
+| Offline run vs normal run, cell-by-cell output | **identical** except benchmark-timing cells |
+| 12 manifest CSVs: SHA-256 **and** row counts | **12/12 verified** |
+| Review findings closed (24 verification points) | **24/24** |
+| Markdown number sweep (±8-cell locality) | clean — no stale number |
+| Notebook cells / figures | 204 cells, 14 inline figures |
+| README vs notebook: checks, stages, transitions, post-conditions, figures, size | all agree (233 / 28 / 44 / 13 / 14 / 5.3 MB) |
+| Deliverable size | **5.3 MB** against a 10 MB limit |
+
+The offline test is worth keeping: it is the first independent confirmation that the
+reproducibility claim in §"How to reproduce" is literally true rather than merely intended.
+The guard script is at `scratchpad/guard/sitecustomize.py`; re-run with
+`env -u NEWS_API_KEY -u GITHUB_TOKEN PYTHONPATH=<guard> .venv/bin/jupyter execute --inplace notebook.ipynb`.
+
+### One open wart
+
+`data_sample/validation_report.csv` embeds a machine-speed benchmark figure
+(`"12.9x faster at n=365 … 75.0x at n=200,000"`), so the file differs after every execution
+and shows as dirty in git even when nothing substantive changed. It is not manifest-tracked,
+so no checksum claim is affected. If it matters, round those figures or drop them from the
+logged `detail` — a one-line change in the tooling comparison cell.
+
+### Status against the review
+
+All nine findings closed. No hypothesis verdict changed at any point: H3 supported, H1/H2/H4
+not supported, exactly as submitted. What changed is that every result is now computed the way
+§1.3 said it would be, and two stated pass/fail assertions that were false are now true —
+the index's held-out comparison (W1.4) and the AR whiteness diagnostic (W1.3).
+
+---
+
+## W5 — original plan text
+
 ## W5 — Optional, only if time remains
 
 A **small manually labelled headline sample** (100–150 headlines, two passes) would convert

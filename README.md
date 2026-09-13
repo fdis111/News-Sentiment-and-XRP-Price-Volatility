@@ -157,6 +157,6 @@ under-powered against sparse leakage before it had ever missed anything real.
 ## Notes
 
 - This project is one subfolder of a multi-module repository; the git root is two levels up.
-- Total deliverable size is **5.0 MB** against a 10 MB limit; all 14 figures are inline.
+- Total deliverable size is **5.3 MB** against a 10 MB limit; all 14 figures are inline.
 - The notebook is not investment advice, and §4.4 sets out explicitly what the results do and
   do not license. §4.5 discusses what it means to measure a public ledger without consent.

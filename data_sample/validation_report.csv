@@ -128,6 +128,7 @@ xrp_gdelt_news,query design: narrow vs broad divergence,0,PASS,-,
 xrp_gdelt_news,articles empty after cleaning,154,WARN,dropped - nothing to score,
 xrp_gdelt_news,syndicated reprints of the same story,763,WARN,dropped - earliest printing kept,763 reprints of 479 stories; 329 republished across outlets
 xrp_gdelt_news,scored text actually mentions XRP or Ripple,3633,WARN,FLAGGED - drives the primary/sensitivity split in Phase 3,3633 of 7131 articles (50.9%) mention neither in the headline that VADER scores
+nlp_artefacts,vendored NLP artefacts checksummed,0,INFO,-,finance_lexicon.json=32b2b0111c5d; known_lemmas.txt=21c6b9a30aba; lemma_map.json=734958ff98ec; stopwords_domain.txt=12485ec1f05d; stopwords_en.txt=5cb3b9dd23c8
 xrp_gdelt_news,"articles scoring exactly 0.0, by cause",2412,WARN,decomposed - only the no-match share is a lexicon gap,"as shipped 43.8% score 0.0, of which 43.5% of the corpus has no recognised term and 0.3% cancels; adapted 33.8% zero / 33.2% no-match. 732 vocabulary gaps closed, 727 moved off zero; correction not demonstrated without labelled ground truth"
 xrp_gdelt_news,convergent validity of the domain lexicon,0,PASS,-,
 xrp_gdelt_news,lemma-normalised de-duplication,67,WARN,reported - surface-form key retained as primary,lemma normalisation merges 67 additional near-duplicates
@@ -166,6 +167,8 @@ master,missing values · volatility_14d,14,WARN,policy: keep,"Rolling-window war
 master,missing values · parkinson_7d,6,WARN,policy: keep,"As parkinson_daily, plus its own rolling warm-up."
 master,missing values · parkinson_14d,13,WARN,policy: keep,As parkinson_7d.
 master,forward-fill did not manufacture a flat price run,0,PASS,-,
+_probe_schema,schema · date → datetime64,0,DRILL,-,
+_probe_schema,schema · close,1,DRILL,STOP - column absent,contracted column 'close' is missing
 leakage,lookahead · daily_return,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
 leakage,lookahead · parkinson_daily,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
 leakage,lookahead · sentiment_mean,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
@@ -221,7 +224,7 @@ network_state_index,axis constructions audited for lookahead,0,INFO,equal-weight
 network_state_index,construct validity against regulatory events,1,WARN,NOT established - reported in §3.9,3 hand-picked events show the expected direction; 42 rule-selected days show nothing (turbulence permutation p=0.337)
 network_state_index,incremental validity against best single component,1,WARN,reported - see §3.8,best axis rho=+0.187 vs best component component: parkinson_daily rho=+0.220
 network_state_index,"incremental validity, held-out period",1,WARN,no predictor claim made for the index - see §3.9,"walk-forward selection inside 200 training days chose fear_greed; test R2=-0.1730 vs axes +0.1762, but 0/10 components and the composite all score negative walk-forward R2 within train, so the comparison does not separate them; hindsight-best selection would have reported +0.2351 (0.4081 selection bias)"
-tooling,"pandas vs hand-written loop, timed",0,INFO,"pandas retained - for alignment, not speed","12.3x faster at n=365 but both under 1 ms; speed-up reaches 83.0x only at n=200,000"
+tooling,"pandas vs hand-written loop, timed",0,INFO,"pandas retained - for alignment, not speed","12.9x faster at n=365 but both under 1 ms; speed-up reaches 75.0x only at n=200,000"
 tooling,sentiment instruments compared on the same corpus,0,INFO,VADER + domain lexicon retained,"4 instruments on 7,131 articles; rule layer removed: rho=0.920 at 29x less runtime; vocabulary swapped (TextBlob): rho=0.274"
 tooling,H1 re-run under every sentiment instrument,0,INFO,null not rejected by any instrument,"Pearson r spans 0.120; smallest p=0.186 (TextBlob (Pattern)); conclusion is instrument-independent, the p-value is not"
 tooling,volatility estimators compared on predictive accuracy,0,INFO,Parkinson retained,leading estimator by next-5d rho: Garman-Klass (+0.275); 21 days violate the no-drift assumption; 0 Garman-Klass breakdowns

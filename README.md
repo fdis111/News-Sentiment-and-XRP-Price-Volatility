@@ -80,8 +80,8 @@ catches the failures these APIs report _inside_ an HTTP 200 response.
   refuses to rebind a name and returns copies, so the recorded lineage is the lineage that
   ran. 44 stage transitions, each timed and logged.
 - **Automated validation.** Declarative schema contracts plus a reusable check library:
-  **230 logged checks across 26 stages**, written to `data_sample/validation_report.csv`
-  (129 PASS, 56 WARN, 39 INFO, 6 DRILL). A logged row is one recorded check, not necessarily
+  **233 logged checks across 28 stages**, written to `data_sample/validation_report.csv`
+  (129 PASS, 56 WARN, 40 INFO, 8 DRILL). A logged row is one recorded check, not necessarily
   an independent assertion — several stages log the same contract per column.
   Missing-value handling is declared as data (`MISSING_POLICY`); 13 post-conditions run
   _inside_ `Stage.bind`, so a frame that fails what its stage promised never becomes reachable.

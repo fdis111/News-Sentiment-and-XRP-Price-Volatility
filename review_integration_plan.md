@@ -536,7 +536,73 @@ number typed by hand that the notebook also computes.
 
 ---
 
-## W4 — Provenance and error handling  (F9)
+## W4 — Provenance and error handling  (F9)  ✅ DONE
+
+**Declared-fatal checks now execute, not just log.** Added `DataContractError` and
+`raise_if_fatal(rows)`, called at the end of both `enforce_schema` and `validate_stream`.
+A check whose declared action begins with `stop` and which actually fails now halts the run.
+Nothing currently fails, so this is hardening with no behavioural change to the submitted
+sample — which is exactly what it should be.
+
+**A checksum mismatch is fatal in cached mode.** `load_or_fetch` raises `DataIntegrityError`
+instead of printing a warning and carrying on. The whole reproducibility claim rests on the
+cached bytes being the audited bytes; warning and continuing would print a commentary about
+one dataset while computing from another.
+
+**Both new guards are drilled.** Added cases (5) and (6) to §2.6's fault-injection cell,
+matching the existing post-condition drill: a frame missing a contracted column is refused,
+and a cached file whose bytes changed is refused. The integrity drill snapshots
+`_manifest.json` and restores it byte-for-byte, then asserts the digest is unchanged — the
+test leaves no trace in the evidence it tests.
+
+> **A design trap worth recording.** The first version exempted rows logged inside an
+> `expected_failure` drill from raising, reasoning that a drill should not halt the notebook.
+> That made the guard untestable by the very mechanism this notebook uses to test guards: the
+> drill fired, the row was marked DRILL, the exemption swallowed it, and the assertion failed
+> with "a fatal schema violation was logged but never raised". The exemption protected
+> nothing real — §2.0.1's and §3.9's leakage drills log directly and never reach
+> `raise_if_fatal` — so it was removed, and the reasoning is now in the docstring.
+
+**TLS bypass is opt-in, not automatic.** `CONFIG["allow_unverified_lexicon_download"]`
+defaults to `False`. The fallback previously fired automatically whenever a verified download
+failed — accepting an unauthenticated file precisely when the network is least trustworthy.
+It now raises with an explanatory message instead, and the bypass runs only if opted into.
+Kept rather than deleted because the lexicon is vendored (making the path unreachable in a
+normal run) and the resilience story is worth demonstrating with the safety default correct.
+
+**Vendored NLP artefacts are hashed.** All five files in `data_sample/nlp/` are digested and
+logged. The CSVs were checksummed while the lexicon and lemma map that interpret them were
+not — verifying the evidence but not the instrument.
+
+**Stale provider references corrected** (all genuine errors, not just tidying):
+
+| Cell | Was | Now |
+|---|---|---|
+| 3 | live re-run blamed on "CoinGecko's endpoints" | names the real constraint: only `xrp_news` cannot be re-acquired, because NewsAPI's tier is a sliding window |
+| 3 | "printing … a loud warning" | states that a mismatch now **raises**, plus what checksums do and do not establish |
+| 18 | "All **four** providers (CoinGecko, Coin Metrics, NewsAPI, alternative.me)" | **seven** (Kraken, Bitstamp, Coin Metrics, GDELT, GitHub, NewsAPI, alternative.me) |
+| 18 | "CoinGecko's public tier is the strictest" | GDELT is, at double its documented floor |
+| 19 | code comment citing CoinGecko's rate limit | GDELT, matching `MIN_INTERVAL_BY_HOST` |
+| 20 | "CoinGecko's windows are relative to the current date" | GDELT re-indexes as coverage settles |
+
+Cells 26, 85, 113 and 190 keep their CoinGecko references — those are the deliberate
+"why not CoinGecko" justification and midterm contrasts, and are correct.
+
+**Install vs. execute separated** in cell 3: `pip install` reaches PyPI; executing the
+notebook reaches nothing. Only the first needs a network.
+
+**Manifest scope stated.** Cells 3 and 20 now say that `checksum recorded retrospectively`
+entries attest that bytes are unchanged since recording — integrity relative to the manifest,
+not independent authentication of acquisition.
+
+Validation log: 230 → **233** (+1 INFO artefact digests, +2 DRILL). README synced to 233
+across 28 stages. Blast radius: cells 71, 105, 201 substantive; the rest timing noise.
+
+---
+
+## W4 — original plan text
+
+
 
 - **`load_or_fetch` (cell 21)** — a checksum mismatch prints a warning and proceeds. In
   `cached` mode it should `raise`, since the entire reproducibility claim rests on the

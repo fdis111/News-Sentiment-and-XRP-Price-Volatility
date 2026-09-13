@@ -6,7 +6,7 @@ An end-to-end, self-contained data pipeline investigating one question:
 
 > **Do shifts in crypto-news sentiment coincide with — or precede — changes in XRP price volatility?**
 
-All work lives in a single notebook, [`nobook.ipynb`](nobook.ipynb): acquisition → automated
+All work lives in a single notebook, [`notebook.ipynb`](notebook.ipynb): acquisition → automated
 validation → feature engineering → hypothesis testing → critical evaluation, with inline
 commentary and visualisations throughout. The study covers **365 days** (2025-09-01 to
 2026-08-31) across **twelve streams from seven providers**.
@@ -19,27 +19,27 @@ sample committed under [`data_sample/`](data_sample/).
 ```bash
 python3.13 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
-.venv/bin/jupyter execute nobook.ipynb          # ~16 s, top to bottom
+.venv/bin/jupyter execute notebook.ipynb          # ~16 s, top to bottom
 ```
 
-To work through it interactively: `.venv/bin/jupyter notebook nobook.ipynb`, then
-*Run ▸ Run All Cells*.
+To work through it interactively: `.venv/bin/jupyter notebook notebook.ipynb`, then
+_Run ▸ Run All Cells_.
 
 Dependencies are pinned to exact versions in [`requirements.txt`](requirements.txt); the
 outputs stored in the notebook were produced on **Python 3.13.2**.
 
 ### What makes the run deterministic
 
-| Mechanism | Effect |
-| --- | --- |
-| `CONFIG["run_mode"] = "cached"` | Reads the committed sample. A missing file raises rather than silently fetching, so a "cached" run cannot quietly produce different numbers. |
-| `CONFIG["analysis_end"]` | A fixed date anchor. Acquisition windows are measured back from it, never from `datetime.now()`. |
-| `CONFIG["random_seed"]` | Fixes the block-bootstrap resampling — every confidence interval reproduces exactly. |
+| Mechanism                              | Effect                                                                                                                                                                                                                    |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CONFIG["run_mode"] = "cached"`        | Reads the committed sample. A missing file raises rather than silently fetching, so a "cached" run cannot quietly produce different numbers.                                                                              |
+| `CONFIG["analysis_end"]`               | A fixed date anchor. Acquisition windows are measured back from it, never from `datetime.now()`.                                                                                                                          |
+| `CONFIG["random_seed"]`                | Fixes the block-bootstrap resampling — every confidence interval reproduces exactly.                                                                                                                                      |
 | Vendored VADER lexicon + NLP artefacts | `data_sample/nltk_data/` and `data_sample/nlp/` (77 KB), so nothing is downloaded and no TLS exception is needed. WordNet is **not** a dependency; it is used once, at authoring time, by `tools_build_nlp_artifacts.py`. |
-| `data_sample/_manifest.json` | Endpoint, parameters, row count and SHA-256 per stream, re-verified on every load. |
+| `data_sample/_manifest.json`           | Endpoint, parameters, row count and SHA-256 per stream, re-verified on every load.                                                                                                                                        |
 
 Both acceptance conditions are exercised: the notebook executes top-to-bottom with `.env`
-absent *and* with the network blackholed.
+absent _and_ with the network blackholed.
 
 ### Re-acquiring live data (optional)
 
@@ -49,30 +49,30 @@ and `NEWS_API_KEY` is required only for the retired NewsAPI comparison stream.
 
 > A live run **will not reproduce these outputs**. GDELT's index is revised, and the
 > retired NewsAPI tier serves only a sliding ~30-day window. §3.4 documents a result whose
-> *sign reversed* between the 91-day and 365-day windows with no code change — the single
+> _sign reversed_ between the 91-day and 365-day windows with no code change — the single
 > most transferable finding in the project.
 
 ## Data sources
 
-| Stream | Provider · endpoint | Grain · window | API key |
-| --- | --- | --- | --- |
-| Price, volume, VWAP, trade count | Kraken · `/0/public/OHLC` | daily · 365 | none |
-| Second venue (cross-check) | Bitstamp · `/api/v2/ohlc/xrpusd` | daily · 365 | none |
-| On-chain activity (10 metrics) | Coin Metrics community · `/v4/timeseries/asset-metrics` | daily · 365 | none |
-| News articles | GDELT DOC 2.0 · `artlist` | per-article · 8,048 articles | none |
-| News tone & volume | GDELT DOC 2.0 · `timelinetone`, `timelinevolraw` | daily · 361 | none |
-| Developer activity | GitHub · `/repos/{repo}/commits`, `/releases` | per-commit · 1,684 | optional |
-| Crypto Fear & Greed Index | alternative.me · `/fng` | daily · 365 | none |
-| News (retired, retained) | NewsAPI · `/v2/everything` | per-article · 399 | required |
+| Stream                           | Provider · endpoint                                     | Grain · window               | API key  |
+| -------------------------------- | ------------------------------------------------------- | ---------------------------- | -------- |
+| Price, volume, VWAP, trade count | Kraken · `/0/public/OHLC`                               | daily · 365                  | none     |
+| Second venue (cross-check)       | Bitstamp · `/api/v2/ohlc/xrpusd`                        | daily · 365                  | none     |
+| On-chain activity (10 metrics)   | Coin Metrics community · `/v4/timeseries/asset-metrics` | daily · 365                  | none     |
+| News articles                    | GDELT DOC 2.0 · `artlist`                               | per-article · 8,048 articles | none     |
+| News tone & volume               | GDELT DOC 2.0 · `timelinetone`, `timelinevolraw`        | daily · 361                  | none     |
+| Developer activity               | GitHub · `/repos/{repo}/commits`, `/releases`           | per-commit · 1,684           | optional |
+| Crypto Fear & Greed Index        | alternative.me · `/fng`                                 | daily · 365                  | none     |
+| News (retired, retained)         | NewsAPI · `/v2/everything`                              | per-article · 399            | required |
 
 CoinGecko was dropped after testing: `market_chart/range` returns HTTP 401 beyond 365 days on
 the free tier and `/ohlc` degrades to 4-day candles past 180. NewsAPI is retained but demoted
-— its 21 overlapping days let §2.1.3 measure *corpus selection* by comparing two providers
+— its 21 overlapping days let §2.1.3 measure _corpus selection_ by comparing two providers
 over identical dates, which is the only reason the older sample was kept.
 
 Acquisition runs through one shared helper with retries and exponential backoff on 429/5xx,
 `Retry-After` compliance, per-host rate limiting, and per-source payload validation that
-catches the failures these APIs report *inside* an HTTP 200 response.
+catches the failures these APIs report _inside_ an HTTP 200 response.
 
 ## Method
 
@@ -82,10 +82,10 @@ catches the failures these APIs report *inside* an HTTP 200 response.
 - **Automated validation.** Declarative schema contracts plus a reusable check library:
   **207 checks across 25 stages**, written to `data_sample/validation_report.csv`.
   Missing-value handling is declared as data (`MISSING_POLICY`); 13 post-conditions run
-  *inside* `Stage.bind`, so a frame that fails what its stage promised never becomes reachable.
-- **Leakage detection (§2.0.1).** Every engineered column's lookahead horizon is *measured*,
+  _inside_ `Stage.bind`, so a frame that fails what its stage promised never becomes reachable.
+- **Leakage detection (§2.0.1).** Every engineered column's lookahead horizon is _measured_,
   by rebuilding it from a prefix and comparing: a backward-looking column is bit-identical,
-  one reading *h* days ahead differs in exactly its last *h* values. All 12 columns match
+  one reading _h_ days ahead differs in exactly its last _h_ values. All 12 columns match
   their declared horizons. The detector is itself tested against three constructions that
   leak on purpose.
 - **NLP (§2.1).** Tokenisation tuned to GDELT's punctuation padding, syndication
@@ -105,16 +105,16 @@ catches the failures these APIs report *inside* an HTTP 200 response.
 **22 tests** in total: 4 confirmatory (BH-corrected), 12 robustness, 2 sensitivity,
 2 diagnostic, 2 exploratory.
 
-| Hypothesis | Result | Verdict |
-| --- | --- | --- |
-| **H1** sentiment → forward 3-day volatility | *r* = −0.031 [−0.135, +0.073], BH *p* = 0.559, n = 355 | **Not supported** |
-| **H2** regulatory news → trading volume | *r* = −0.056 [−0.158, +0.048], BH *p* = 0.391, n = 358 | **Not supported** |
-| **H3** on-chain activity ↔ volatility | *r* = +0.281 [+0.182, +0.373], BH *p* < 0.0001, n = 358; block bootstrap [+0.102, +0.450] | **Supported** |
-| **H4** development → ledger usage | *r* = −0.229 [−0.472, +0.047], BH *p* = 0.205, n = 52 | **Not supported** |
+| Hypothesis                                  | Result                                                                                    | Verdict           |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------- |
+| **H1** sentiment → forward 3-day volatility | _r_ = −0.031 [−0.135, +0.073], BH _p_ = 0.559, n = 355                                    | **Not supported** |
+| **H2** regulatory news → trading volume     | _r_ = −0.056 [−0.158, +0.048], BH _p_ = 0.391, n = 358                                    | **Not supported** |
+| **H3** on-chain activity ↔ volatility       | _r_ = +0.281 [+0.182, +0.373], BH _p_ < 0.0001, n = 358; block bootstrap [+0.102, +0.450] | **Supported**     |
+| **H4** development → ledger usage           | _r_ = −0.229 [−0.472, +0.047], BH _p_ = 0.205, n = 52                                     | **Not supported** |
 
 One positive result out of four, and the honest reading of it is narrow. H3 survives a
 bootstrap that assumes serial dependence, an alternate venue, and the exclusion of
-noise-flagged days — but §3.6 shows the association does not localise at *any* lag once each
+noise-flagged days — but §3.6 shows the association does not localise at _any_ lag once each
 series is stripped of its own dynamics. Active addresses and volatility are two slow-moving
 series that are high in the same periods, not two series where a move in one follows a move
 in the other. That is a weaker and more precise claim than "on-chain activity drives
@@ -130,15 +130,15 @@ corpus to articles that actually mention XRP, and discovering that the index's a
 response to regulatory events was an artefact of who chose the events.
 
 Three defects were found by checks with no particular reason to find anything: §4.0.6 was
-written to *justify* the vendored lemma map and found it corrupting 1,281 tokens; §2.0.1 was
-written to *detect* leakage and did; and the deliberate controls in §3.2 showed that detector
+written to _justify_ the vendored lemma map and found it corrupting 1,281 tokens; §2.0.1 was
+written to _detect_ leakage and did; and the deliberate controls in §3.2 showed that detector
 under-powered against sparse leakage before it had ever missed anything real.
 
 ## Project structure
 
 ```text
 .
-├── nobook.ipynb                  # the single master notebook (194 cells, 130 functions)
+├── notebook.ipynb                  # the single master notebook (194 cells, 130 functions)
 ├── data_sample/                  # deliverable sample (relative paths throughout)
 │   ├── xrp_*.csv                 #   twelve acquired streams
 │   ├── _manifest.json            #   provenance + SHA-256 per stream, verified on load

@@ -1,18 +1,18 @@
 # ---------------------------------------------------------------------------
 # DSM020 — News Sentiment vs XRP Price Volatility
 # Replicability specification. Versions are pinned to the exact releases that
-# produced the outputs stored in nobook.ipynb.
+# produced the outputs stored in notebook.ipynb.
 #
 # Reproduce from scratch (three commands, no API key, no network needed):
 #
 #     python3.13 -m venv .venv
 #     .venv/bin/python -m pip install -r requirements.txt
-#     .venv/bin/jupyter execute nobook.ipynb
+#     .venv/bin/jupyter execute notebook.ipynb
 #
 # Interpreter: Python 3.13.2 (3.11+ required for the type-hint syntax used).
 # Runtime: ~16 s end to end from the cached sample in data_sample/.
 # Full instructions, including how to re-acquire live data, are in the
-# "How to reproduce this notebook" section at the top of nobook.ipynb.
+# "How to reproduce this notebook" section at the top of notebook.ipynb.
 # ---------------------------------------------------------------------------
 
 # --- Analysis libraries (imported directly by the notebook) ---

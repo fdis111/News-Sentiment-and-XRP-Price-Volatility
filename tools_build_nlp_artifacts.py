@@ -76,12 +76,9 @@ en = sorted(set(stopwords.words("english")))
 (OUT / "stopwords_en.txt").write_text("\n".join(en) + "\n")
 print(f"english stopwords vendored: {len(en)}")
 
-# Domain stop-words, derived rather than guessed: tokens appearing in a large share of
-# documents carry almost no power to distinguish one day's coverage from another's.
+
 n_docs = len(texts)
 ubiquitous = {w: df[w] / n_docs for w in df if df[w] / n_docs >= 0.03 and w not in en}
-# Crypto-native slang and SEO boilerplate that survive the frequency filter but are
-# still noise for sentiment. Curated, and marked as such.
 CURATED = [
     "hodl", "moon", "mooning", "fud", "rekt", "wen", "ser", "gm", "ath", "dyor",
     "wagmi", "ngmi", "bagholder", "degen", "shill", "altcoin", "altcoins", "memecoin",
@@ -134,7 +131,7 @@ EXCLUDED = {
 print(f"finance lexicon: {len(FINANCE)} terms added, "
       f"{len(EXCLUDED)} topic markers deliberately excluded")
 
-# coverage: how much of the corpus do the new terms actually touch?
+
 hit = sum(tf[w] for w in FINANCE if w in tf)
 print(f"  new terms account for {hit:,} token instances "
       f"({hit/sum(tf.values()):.2%} of the corpus)")

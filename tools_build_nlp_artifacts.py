@@ -1,10 +1,5 @@
 #!/usr/bin/env python
-"""W4: build the small vendored NLP artefacts the notebook needs to run offline.
 
-WordNet is ~10 MB zipped and cannot ship inside a 10 MB deliverable. It IS used - once,
-here, at authoring time - to derive a lemma map restricted to this corpus's vocabulary,
-which is small enough to vendor. The notebook then lemmatises without WordNet present.
-"""
 import collections
 import json
 import pathlib
@@ -51,15 +46,7 @@ lem = WordNetLemmatizer()
 
 
 def best_lemma(word: str) -> str:
-    """
-    Lemma without a POS tagger.
 
-    A tagger would cost another ~2 MB of model and buy little on headlines, so both the
-    verb and noun readings are tried and the one that actually reduces the token is
-    taken, preferring the verb (headlines are verb-heavy: "surges", "files", "plunges").
-    The known failure is a noun that looks like an inflected verb - "holdings" reduces to
-    "holding" - which is recorded here rather than hidden.
-    """
     v = lem.lemmatize(word, "v")
     n = lem.lemmatize(word, "n")
     if v != word:
@@ -69,12 +56,7 @@ def best_lemma(word: str) -> str:
     return word
 
 
-# Two artefacts, not one. The map holds the words WordNet REDUCES; the companion list
-# holds the words WordNet inspected and left alone. Both are needed: without the second,
-# a word that is already its own lemma is indistinguishable from a word the map never saw,
-# and the notebook's crude suffix fallback fires on it. Measured cost of that conflation
-# before the list existed: 279 corpus types mangled ("across" -> "acros", "analysis" ->
-# "analysi", "focus" -> "focu"), 277 of them pure damage. See §4.0.6.
+
 lemma_map = {}
 known_lemmas = []
 for w in tf:
@@ -113,12 +95,7 @@ print(f"domain stopwords: {len(domain_stop)} "
       f"({len(ubiquitous)} derived by document frequency >= 3%, {len(CURATED)} curated)")
 print("  derived:", sorted(ubiquitous, key=ubiquitous.get, reverse=True)[:18])
 
-# ---------------------------------------------------------------- finance lexicon
-# VADER valences run -4..+4. Only terms with a genuine DIRECTION are added. Topic markers
-# that a naive list would include - sec, etf, volatility, leverage, settlement,
-# regulation - are deliberately excluded: they say what an article is about, not whether
-# it is good or bad news, and scoring them would inject the analyst's priors into the
-# measurement. That exclusion list is shipped too, so the choice is inspectable.
+
 FINANCE = {
     # downside
     "bearish": -2.0, "selloff": -2.5, "sell-off": -2.5, "plunge": -3.0, "plunges": -3.0,

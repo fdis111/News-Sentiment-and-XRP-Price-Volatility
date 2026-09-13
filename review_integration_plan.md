@@ -80,7 +80,7 @@ F5 is the cheapest four marks in the document: it is proofreading, not statistic
 
 ## W1 — Statistical correctness  (blocking; everything downstream depends on it)
 
-### W1.1 · Register the declared statistic — F1
+### W1.1 · Register the declared statistic — F1  ✅ DONE
 `report_correlation` (cell 108) hard-codes Pearson into `estimate`, `p_raw` and the Fisher
 interval. Add a `primary: str = "pearson"` argument that selects which statistic populates
 those three fields; keep **both** statistics in the row regardless, so nothing is lost.
@@ -95,7 +95,7 @@ Then audit the other three confirmatory registrations: each must register the st
 cell 1 declares for it. This is a one-line check per hypothesis and closes the finding
 completely rather than patching H4 alone.
 
-### W1.2 · Drop the partial week — F2
+### W1.2 · Drop the partial week — F2  ✅ DONE
 Cell 141's `.resample("W")` emits a week-ending label of 2026-09-06 holding a single
 observation (Monday 2026-08-31), and the print calls all 53 "complete". Carry an explicit
 day count through the resample and filter on it:
@@ -108,6 +108,50 @@ print(f"{len(full_weeks)} complete weeks ({len(weekly) - len(full_weeks)} partia
 
 Expected: 52 weeks, 51 lag-one pairs, ρ = −0.262, p = 0.063. H4 stays unsupported. State
 the partial-week policy in the markdown rather than leaving it implicit.
+
+### W1.1 + W1.2 — outcome (done together, one execution)
+
+`report_correlation` gained `primary="pearson"|"spearman"`, deciding which statistic fills
+`estimate`, `p_raw`, `effect` and the interval — i.e. which one is registered and corrected.
+`fisher_ci` gained `se_factor`, set to `SPEARMAN_SE_FACTOR = 1.06` (Bonett–Wright) when rho
+is the estimate, because the rank transform inflates the sampling variance of Fisher's z and
+the Pearson interval would overstate precision. H4 registers with `primary="spearman"`; §1.3
+declares Pearson for H1–H3, which is the default, so those are unchanged by construction.
+
+Cell 141 now carries `days_observed` through the resample and keeps only 7-day weeks:
+
+```
+52 complete 7-day weeks from 2025-09-07 to 2026-08-30
+1 partial week(s) dropped: 2026-09-06 (1d)
+```
+
+| Confirmatory family | Submitted | Now |
+|---|---|---|
+| H4 statistic registered | Pearson r = −0.229 | **Spearman ρ = −0.262** [−0.51, +0.03] |
+| H4 raw p | 0.1026 (Pearson) | **0.0628** (Spearman) |
+| H4 BH-adjusted p | 0.2052 | **0.1256** |
+| H4 sample | 52 lag-one pairs / 53 "complete" weeks | **51 lag-one pairs / 52 complete weeks** |
+| H1 / H2 / H3 | unchanged | unchanged |
+| Verdicts | — | **none flipped** |
+
+The conclusions table in cell 173 now pairs each hypothesis's declared statistic with its own
+p-value and interval; previously it showed a Spearman estimate beside a BH-adjusted Pearson
+p, which was the substance of finding 1.
+
+**One design correction mid-flight.** The first version added `primary`, `pearson_r` and
+`pearson_p` to *every* row, which duplicated `estimate`/`p_raw` on all Pearson tests and
+widened cell 112's table to state the same number twice. The Pearson columns are now added
+only when rho is primary, and `primary` was dropped since `effect` already carries it — so
+every pre-existing table renders exactly as before and only the H4 row gains the comparison.
+
+**Cascade caught outside W1.** Cell 1's abstract asserted the index "does not beat its best
+single component on a held-out period" — falsified by W1.4. Rewritten to the claim the
+evidence now supports. Cells 173 and 195 updated for the new H4 figures and *n*.
+
+Blast radius verified against `HEAD`: cells 141, 154 (intended), 112 (reverted to identical),
+and 51, 82, 103, 177, 179, 203 — all blank-line or timing noise.
+
+---
 
 ### W1.3 · Ljung-Box degrees of freedom — F3
 `ljung_box` (cell 143) always tests Q against χ²(lags). On fitted AR(p) residuals that is

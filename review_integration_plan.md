@@ -367,7 +367,73 @@ where a stated pass/fail assertion was falsified rather than a number nudged.
 
 ---
 
-## W2 — Inference and conclusion calibration  (F8; wording, but load-bearing)
+## W2 — Inference and conclusion calibration  (F8)  ✅ DONE
+
+**The substantive item first.** H3's forward-volatility row now gets a diagnostic, not a
+softened sentence. Cell 135 examines the disagreement directly:
+
+| Quantity | Value |
+|---|---:|
+| Pearson r (raw scale) | +0.052 (p = 0.3210) |
+| Spearman rho | +0.197 (p = 1.63e-04) |
+| Pearson r on log(forward vol) | +0.087 (p = 0.1000) |
+| Block-bootstrap 95% CI on rho | [+0.05, +0.32], block 7d |
+| n / n_eff | 362 / 141 |
+
+The log transform moves the linear estimate toward the rank result but **not onto it and
+not to significance**, so the honest reading is that part of the gap is the heavy right tail
+and part is that the association is monotone without being linear on either scale. The
+dependence-aware bootstrap interval excludes zero. The cell then states plainly what this
+does not license: it is a robustness row, uncorrected, not pre-registered, and is reported
+as a signal worth pre-registering rather than a predictive finding.
+
+Cells 137, 173 and 196 previously cited only the Pearson figure to conclude "busy days do
+not announce volatile tomorrows". All three now carry the rank result and narrow the claim
+to what was actually tested — a *linear* predictive relationship is ruled out; a monotone
+forward association is open.
+
+**The rest of W2:**
+
+- **Cells 108/154** — cell 154 now prints a "three quantities, three different claims"
+  block distinguishing nominal-n p-values and Fisher intervals, `n_eff` as a diagnostic that
+  does not enter any p-value, and the block bootstrap as the only dependence-aware interval
+  (and one for a different estimand, Spearman rho). It states explicitly that no row is a
+  serial-dependence-corrected Pearson p-value, because none is computed anywhere.
+- **Cell 145** — ADF/KPSS disagreement is no longer diagnosed as long memory. It now names
+  long memory as one explanation among several (structural break, slowly varying mean, low
+  power) and reports the integration order as UNRESOLVED, since no long-memory estimator is
+  run. The log_row wording changed with it.
+- **Cell 173** — "Granger tests are null in both directions, so reverse causality is
+  excluded" became a statement that the data give no evidence either way, with the explicit
+  note that failing to reject is not establishing.
+- **Cell 198** — "daily news sentiment carries no information" became "no specification
+  detects information", framed as a consistent failure to detect.
+- **Cell 137** — `transfers_per_address` is now described as what it is: a frequency ratio,
+  transfers per address per day. The "more people, smaller transfers" reading is gone —
+  it measures neither transfer size nor people, and the address≠user caveat from §4.3 is
+  pulled forward to where the claim is made.
+- **Cell 1** — "pre-registered" is now defined where it is first used. No dated artefact
+  exists in the archive (git history begins 2026-09-13; the midterm PDF is in gitignored
+  `local/`), so the notebook states that the term means fixed-in-§1.3-before-§3-was-run,
+  by assertion, and explicitly not external registration.
+
+**One engineering note worth keeping.** The new `block_bootstrap_ci` call in cell 135 draws
+from the shared seeded `RNG`, which shifts the stream position for every later consumer.
+Cells 167 and 185 moved slightly as a result (interval width 0.347 → 0.353, a permutation p
+0.342 → 0.337) with no verdict affected, and the hardcoded "45% too narrow" in cell 190
+became 46%. **Any future change that adds or removes a random draw will shift every seeded
+result after it**, so cell 190's figure and cell 137's bootstrap interval need re-checking
+after such a change. Results stay exactly reproducible run-to-run; they are just not stable
+under insertion.
+
+The validation log grew by one row (229 → 230, +1 WARN) from the new diagnostic's `log_row`.
+**W3 must use 230, not 229** — the README's 207 is now two revisions stale.
+
+---
+
+## W2 — original plan text
+
+
 
 Mostly prose, one substantive addition. Do after W1 so the numbers are final.
 

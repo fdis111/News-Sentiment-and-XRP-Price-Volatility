@@ -1,0 +1,230 @@
+stream,check,n_failed,status,action,detail
+xrp_kraken,schema · date → datetime64,0,PASS,-,
+xrp_kraken,schema · open → float64,0,PASS,-,
+xrp_kraken,schema · high → float64,0,PASS,-,
+xrp_kraken,schema · low → float64,0,PASS,-,
+xrp_kraken,schema · close → float64,0,PASS,-,
+xrp_kraken,schema · vwap → float64,0,PASS,-,
+xrp_kraken,schema · volume → float64,0,PASS,-,
+xrp_kraken,schema · trade_count → float64,0,PASS,-,
+xrp_kraken,schema · volume_usd → float64,0,PASS,-,
+xrp_kraken,all contracted columns present,0,PASS,-,
+xrp_kraken,no nulls in the OHLCV block,0,PASS,-,
+xrp_kraken,no duplicate days,0,PASS,-,
+xrp_kraken,days ascending,0,PASS,-,
+xrp_kraken,gap-free daily calendar,0,PASS,-,
+xrp_kraken,candle bounds coherent (high >= o/c >= low),0,PASS,-,
+xrp_kraken,all prices strictly positive,0,PASS,-,
+xrp_kraken,volume non-negative,0,PASS,-,
+xrp_kraken,trade count positive (a day with no trades is not a day),0,PASS,-,
+xrp_kraken,no implausible daily jumps,0,PASS,-,
+xrp_bitstamp,schema · date → datetime64,0,PASS,-,
+xrp_bitstamp,schema · open → float64,0,PASS,-,
+xrp_bitstamp,schema · high → float64,0,PASS,-,
+xrp_bitstamp,schema · low → float64,0,PASS,-,
+xrp_bitstamp,schema · close → float64,0,PASS,-,
+xrp_bitstamp,schema · volume → float64,0,PASS,-,
+xrp_bitstamp,all contracted columns present,0,PASS,-,
+xrp_bitstamp,no nulls,0,PASS,-,
+xrp_bitstamp,no duplicate days,0,PASS,-,
+xrp_bitstamp,gap-free daily calendar,0,PASS,-,
+xrp_bitstamp,candle bounds coherent (high >= o/c >= low),0,PASS,-,
+xrp_bitstamp,all prices strictly positive,0,PASS,-,
+xrp_onchain,schema · date → datetime64,0,PASS,-,
+xrp_onchain,schema · tx_count → float64,0,PASS,-,
+xrp_onchain,schema · active_addresses → float64,0,PASS,-,
+xrp_onchain,schema · transfer_count → float64,0,PASS,-,
+xrp_onchain,schema · addresses_with_balance → float64,0,PASS,-,
+xrp_onchain,schema · fees_native → float64,0,PASS,-,
+xrp_onchain,schema · ledger_count → float64,0,PASS,-,
+xrp_onchain,schema · mvrv → float64,0,PASS,-,
+xrp_onchain,schema · market_cap_usd → float64,0,PASS,-,
+xrp_onchain,schema · reported_volume_usd → float64,0,PASS,-,
+xrp_onchain,schema · reference_price_usd → float64,0,PASS,-,
+xrp_onchain,all contracted columns present,0,PASS,-,
+xrp_onchain,no nulls in the core activity counts,0,PASS,-,
+xrp_onchain,no duplicate days,0,PASS,-,
+xrp_onchain,gap-free daily calendar,0,PASS,-,
+xrp_onchain,counts are whole numbers,0,PASS,-,
+xrp_onchain,active_addresses > 0 (divisor),0,PASS,-,
+xrp_onchain,MVRV strictly positive,0,PASS,-,
+xrp_onchain,reported volume non-negative,0,PASS,-,
+xrp_onchain,no implausible jumps in active addresses,3,WARN,flag - see the note in 2.0,3 consecutive moves > 100% (max 291.09%)
+xrp_fear_greed,schema · date → datetime64,0,PASS,-,
+xrp_fear_greed,schema · fear_greed → float64,0,PASS,-,
+xrp_fear_greed,schema · fear_greed_label → string,0,PASS,-,
+xrp_fear_greed,all contracted columns present,0,PASS,-,
+xrp_fear_greed,no nulls,0,PASS,-,
+xrp_fear_greed,no duplicate days,0,PASS,-,
+xrp_fear_greed,gap-free daily calendar,0,PASS,-,
+xrp_fear_greed,index within its documented 0-100 scale,0,PASS,-,
+xrp_gdelt_news,schema · date → datetime64,0,PASS,-,
+xrp_gdelt_news,schema · headline → string,0,PASS,-,
+xrp_gdelt_news,schema · published_at → string,0,PASS,-,
+xrp_gdelt_news,schema · source → string,0,PASS,-,
+xrp_gdelt_news,schema · source_country → string,0,PASS,-,
+xrp_gdelt_news,schema · language → string,0,PASS,-,
+xrp_gdelt_news,schema · url → string,0,PASS,-,
+xrp_gdelt_news,all contracted columns present,0,PASS,-,
+xrp_gdelt_news,headline/date/source never null,154,WARN,drop article,headline: 154 null
+xrp_gdelt_news,no duplicate articles by URL,0,PASS,-,
+xrp_gdelt_news,every day covered,5,WARN,KEEP as NaN - no news is not neutral news,"missing days: 2025-12-06, 2026-07-01, 2026-07-02, 2026-07-03 (+1 more)"
+xrp_gdelt_coverage,schema · window_start → datetime64,0,PASS,-,
+xrp_gdelt_coverage,schema · window_end → datetime64,2,WARN,unparseable values coerced to NaN,2 of 92 values
+xrp_gdelt_coverage,schema · articles → float64,0,PASS,-,
+xrp_gdelt_coverage,schema · status → string,0,PASS,-,
+xrp_gdelt_coverage,all contracted columns present,0,PASS,-,
+xrp_gdelt_coverage,no nulls,2,WARN,investigate,window_end: 2 null
+xrp_gdelt_coverage,no duplicate windows,0,PASS,-,
+xrp_gdelt_coverage,windows ascending,0,PASS,-,
+xrp_gdelt_coverage,articles non-negative,0,PASS,-,
+xrp_gdelt_tone,schema · date → datetime64,0,PASS,-,
+xrp_gdelt_tone,schema · gdelt_tone → float64,0,PASS,-,
+xrp_gdelt_tone,all contracted columns present,0,PASS,-,
+xrp_gdelt_tone,no nulls,0,PASS,-,
+xrp_gdelt_tone,no duplicate days,0,PASS,-,
+xrp_gdelt_tone,gap-free daily calendar,4,WARN,report - GDELT indexing gaps are real,"missing days: 2026-07-01, 2026-07-02, 2026-07-03, 2026-07-04"
+xrp_gdelt_tone,tone within GDELT's documented -100..100 range,0,PASS,-,
+xrp_gdelt_volume,schema · date → datetime64,0,PASS,-,
+xrp_gdelt_volume,schema · gdelt_article_count → float64,0,PASS,-,
+xrp_gdelt_volume,all contracted columns present,0,PASS,-,
+xrp_gdelt_volume,no nulls,0,PASS,-,
+xrp_gdelt_volume,no duplicate days,0,PASS,-,
+xrp_gdelt_volume,gap-free daily calendar,4,WARN,report - GDELT indexing gaps are real,"missing days: 2026-07-01, 2026-07-02, 2026-07-03, 2026-07-04"
+xrp_gdelt_volume,article count non-negative,0,PASS,-,
+xrp_gdelt_volume_broad,schema · date → datetime64,0,PASS,-,
+xrp_gdelt_volume_broad,schema · gdelt_article_count_broad → float64,0,PASS,-,
+xrp_gdelt_volume_broad,all contracted columns present,0,PASS,-,
+xrp_gdelt_volume_broad,no nulls,0,PASS,-,
+xrp_gdelt_volume_broad,no duplicate days,0,PASS,-,
+xrp_gdelt_volume_broad,article count non-negative,0,PASS,-,
+xrp_github_commits,schema · date → datetime64,0,PASS,-,
+xrp_github_commits,schema · repo → string,0,PASS,-,
+xrp_github_commits,schema · sha → string,0,PASS,-,
+xrp_github_commits,schema · author → string,0,PASS,-,
+xrp_github_commits,schema · commit_type → string,0,PASS,-,
+xrp_github_commits,schema · subject → string,0,PASS,-,
+xrp_github_commits,all contracted columns present,0,PASS,-,
+xrp_github_commits,no nulls in the identifying fields,0,PASS,-,
+xrp_github_commits,no duplicate commits,0,PASS,-,
+xrp_github_commits,commits ascending,0,PASS,-,
+xrp_github_releases,schema · date → datetime64,0,PASS,-,
+xrp_github_releases,schema · repo → string,0,PASS,-,
+xrp_github_releases,schema · tag → string,0,PASS,-,
+xrp_github_releases,all contracted columns present,0,PASS,-,
+xrp_github_releases,no nulls,0,PASS,-,
+xrp_github_releases,no duplicate tags per repo,0,PASS,-,
+xrp_news,schema · date → datetime64,0,PASS,-,
+xrp_news,schema · headline → string,0,PASS,-,
+xrp_news,schema · snippet → string,0,PASS,-,
+xrp_news,schema · published_at → string,0,PASS,-,
+xrp_news,schema · source → string,0,PASS,-,
+xrp_news,all contracted columns present,0,PASS,-,
+xrp_news,headline/date/source never null,0,PASS,-,
+xrp_news,snippet present,41,WARN,KEEP - scored on headline alone (see 2.1),snippet: 41 null
+xrp_news,no exact duplicate articles,0,PASS,-,
+xrp_news,every day covered,4,WARN,KEEP as NaN - frozen 21-day overlap corpus,"missing days: 2026-06-09, 2026-06-10, 2026-06-16, 2026-06-23"
+xrp_gdelt_news,query design: narrow vs broad divergence,0,PASS,-,
+xrp_gdelt_news,articles empty after cleaning,154,WARN,dropped - nothing to score,
+xrp_gdelt_news,syndicated reprints of the same story,763,WARN,dropped - earliest printing kept,763 reprints of 479 stories; 329 republished across outlets
+xrp_gdelt_news,scored text actually mentions XRP or Ripple,3633,WARN,FLAGGED - drives the primary/sensitivity split in Phase 3,3633 of 7131 articles (50.9%) mention neither in the headline that VADER scores
+xrp_gdelt_news,articles scoring exactly 0.0 (lexicon blind),2412,WARN,REDUCED by the domain lexicon in §2.1.3,"43.8% blind as shipped, 33.8% adapted; 727 articles rescued from a false neutral"
+xrp_gdelt_news,convergent validity of the domain lexicon,0,PASS,-,
+xrp_gdelt_news,lemma-normalised de-duplication,67,WARN,reported - surface-form key retained as primary,lemma normalisation merges 67 additional near-duplicates
+xrp_gdelt_news,lemma-based regulatory classifier evaluated and rejected,0,PASS,-,
+corpus_overlap,provider agreement on daily sentiment,1,WARN,reported - see §2.1.2,Pearson r=+0.250 over 21 shared days; GDELT indexed 317 articles against NewsAPI's 399
+daily_ohlc,one row per calendar day,0,PASS,-,
+daily_ohlc,gap-free daily calendar,0,PASS,-,
+daily_ohlc,daily high bounds daily low,0,PASS,-,
+daily_ohlc,no null high/low,0,PASS,-,
+daily_ohlc,estimator non-negative,0,PASS,-,
+daily_github,weekday cycle in commit activity,29,WARN,removed by construction: every merged feature is a 7-day rolling quantity,"weekday mean 6.4 vs weekend 0.2 commits (28.8x); the ledger's own tx_count shows 1.1x, so the cycle is the developers', not XRP's"
+daily_noise_flags,cross-venue volume divergence,17,WARN,"FLAG - one exchange's activity, not the market's",17 of 365 days: Kraken/Bitstamp volume ratio >3 MAD from its rolling median
+daily_noise_flags,trade-size compression,0,PASS,-,
+daily_noise_flags,exchange-migration signature,3,WARN,"FLAG - wallet consolidation, not economic use",3 of 365 days: transfers +50% while active addresses moved <10%
+daily_noise_flags,any systemic-noise flag,20,WARN,"FLAGGED, never dropped - re-tested in §3.4.1",20 of 365 days: at least one detector fired
+daily_noise_flags,lookahead · robust_z on volume_xrp,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+daily_noise_flags,lookahead · robust_z on mean_trade_size,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+daily_market,Benford's law tested for applicability and rejected,1,WARN,NOT used - precondition fails at daily aggregation,"real data p=0.0000, but synthetic CLEAN data of the same shape p=0.0000; the test cannot separate shape from conduct here"
+daily_market,price agrees with an independent provider,0,PASS,-,
+daily_market,reported vs observable volume divergence,1,WARN,"H2 uses named-venue volume, not aggregate reported volume","reported/observed median 47.6x, range 20.9-320.9x, log-log r=0.914"
+master,missing values · article_count,7,WARN,policy: zero,"A true count - a day with no XRP news genuinely saw zero articles, so 0 is the observed value, not a guess."
+master,missing values · sentiment_mean,7,WARN,policy: keep,No news is NOT neutral news. Imputing 0.0 would assert an observation that was never made; the H1/H2 tests instead restrict to days where news exists.
+master,missing values · sentiment_mean_broad,5,WARN,policy: keep,As sentiment_mean: no news is not neutral news.
+master,missing values · article_count_broad,5,WARN,policy: zero,"A true count, as article_count."
+master,missing values · gdelt_tone,4,WARN,policy: keep,"GDELT's own daily tone; four days in July 2026 are missing from its index entirely, and an absent day is unobserved, not neutral."
+master,missing values · gdelt_article_count,4,WARN,policy: zero,A true count over GDELT's complete index.
+master,missing values · commits_7d,6,WARN,policy: keep,"Rolling-window warm-up, as the volatility measures."
+master,missing values · commits_core_7d,6,WARN,policy: keep,As commits_7d.
+master,missing values · contributors_7d,6,WARN,policy: keep,As commits_7d.
+master,missing values · feature_share_7d,19,WARN,policy: keep,Undefined on a week with no commits at all; a ratio with no denominator is not zero.
+master,missing values · days_since_release,1,WARN,policy: keep,Undefined before the first release in the window.
+master,missing values · amihud_illiquidity,1,WARN,policy: keep,Derived from return and volume; inherits their gaps.
+master,missing values · daily_return,1,WARN,policy: keep,Undefined on the first day - there is no prior close to difference against.
+master,missing values · volatility_7d,7,WARN,policy: keep,Rolling-window warm-up: the first 7 days have too few observations for a standard deviation to exist.
+master,missing values · volatility_14d,14,WARN,policy: keep,"Rolling-window warm-up, as volatility_7d."
+master,missing values · parkinson_7d,6,WARN,policy: keep,"As parkinson_daily, plus its own rolling warm-up."
+master,missing values · parkinson_14d,13,WARN,policy: keep,As parkinson_7d.
+master,forward-fill did not manufacture a flat price run,0,PASS,-,
+leakage,lookahead · daily_return,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · parkinson_daily,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · sentiment_mean,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · active_addresses,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · volatility_7d,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · volatility_14d,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · parkinson_7d,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · parkinson_14d,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+leakage,lookahead · next_abs_return,0,INFO,verified by truncation,"declared 1 day(s), measured 1"
+leakage,lookahead · next_volatility_7d,0,INFO,verified by truncation,"declared 1 day(s), measured 1"
+leakage,lookahead · fwd_vol_3d,0,INFO,verified by truncation,"declared 3 day(s), measured 3"
+leakage,lookahead · fwd_parkinson_3d,0,INFO,verified by truncation,"declared 3 day(s), measured 3"
+leakage_control,lookahead · CONTROL: whole-sample z-score of volume,1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 364"
+leakage_control,lookahead · CONTROL: min-max scaling of active addresses,1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 359"
+leakage_control,lookahead · CONTROL: backfilled sentiment (bfill across gaps),1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 4"
+leakage,detector validated against deliberate leaks,0,INFO,all controls caught,"3 constructions that leak by design, all raising LeakageError; 12 of 12 real columns match their declared horizon"
+master,H3 re-estimated without noise-flagged days,0,PASS,-,
+stationarity,ADF and KPSS on every series entering a lag test,2,WARN,reported - robustness re-run in §3.6.3,simulated nulls at n=358 reproduce published critical values (ADF 5%: -2.85 vs -2.87; KPSS 95%: 0.46 vs 0.463); 2 series show long memory
+cross_correlation,"pre-whitened CCF, H1 across ±14 days",0,PASS,-,
+stationarity,Granger re-run under stationary transformations,0,INFO,verdict unchanged - see §3.6.1,"6 tests across levels, logs and first differences; smallest p = 0.542; the integration-order ambiguity does not change the conclusion in either direction"
+daily_market_alt,missing values · trade_count,365,WARN,policy: ffill,As volume: a venue outage is not zero trading.
+master_alt,missing values · trade_count,365,WARN,policy: ffill,As volume: a venue outage is not zero trading.
+master_alt,missing values · article_count,7,WARN,policy: zero,"A true count - a day with no XRP news genuinely saw zero articles, so 0 is the observed value, not a guess."
+master_alt,missing values · sentiment_mean,7,WARN,policy: keep,No news is NOT neutral news. Imputing 0.0 would assert an observation that was never made; the H1/H2 tests instead restrict to days where news exists.
+master_alt,missing values · gdelt_tone,4,WARN,policy: keep,"GDELT's own daily tone; four days in July 2026 are missing from its index entirely, and an absent day is unobserved, not neutral."
+master_alt,missing values · gdelt_article_count,4,WARN,policy: zero,A true count over GDELT's complete index.
+master_alt,missing values · daily_return,1,WARN,policy: keep,Undefined on the first day - there is no prior close to difference against.
+master_alt,missing values · volatility_7d,7,WARN,policy: keep,Rolling-window warm-up: the first 7 days have too few observations for a standard deviation to exist.
+master_alt,missing values · volatility_14d,14,WARN,policy: keep,"Rolling-window warm-up, as volatility_7d."
+master_alt,missing values · parkinson_7d,6,WARN,policy: keep,"As parkinson_daily, plus its own rolling warm-up."
+master_alt,missing values · parkinson_14d,13,WARN,policy: keep,As parkinson_7d.
+network_state_index,migration-flagged days excluded from the utility block,3,WARN,masked to NaN - see §3.9,3 days where transfers jumped without participants; carrying them would read wallet consolidation as network usage
+network_state_index,lookahead · Z · utility::tx_count,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · utility::active_addresses,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · utility::transfer_count,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · utility::fees_native,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · utility::commits_7d,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · turbulence::parkinson_daily,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · turbulence::abs_return,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · turbulence::venue_divergence,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · turbulence::reported_inflation,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · fear::fear_greed,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · Z · fear::mvrv,0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,single 'panic' scalar failed internal consistency,1,WARN,REDESIGNED as three orthogonal blocks - see §3.8,"combined alpha 0.186, equal-weight vs PC1 r=0.093; volatility non-directional (rho=-0.077 against signed return)"
+network_state_index,lookahead · axis · utility (equal weights - USED),0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · axis · turbulence (equal weights - USED),0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · axis · fear (equal weights - USED),0,INFO,verified by truncation,"declared 0 day(s), measured 0"
+network_state_index,lookahead · axis · utility (PC1 - NOT used),1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 313"
+network_state_index,lookahead · axis · turbulence (PC1 - NOT used),1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 290"
+network_state_index,lookahead · axis · fear (PC1 - NOT used),1,DRILL,STOP - reads beyond its declared horizon,"declared 0 day(s), measured 319"
+network_state_index,axis constructions audited for lookahead,0,INFO,equal-weight axes used; PC1 retained for comparison only,all three equal-weight axes measure a 0-day horizon; PC1 measures 290-319 days because its loadings use the whole sample
+network_state_index,construct validity against regulatory events,1,WARN,NOT established - reported in §3.9,3 hand-picked events show the expected direction; 42 rule-selected days show nothing (turbulence permutation p=0.342)
+network_state_index,incremental validity against best single component,1,WARN,reported - see §3.8,best axis rho=+0.187 vs best component component: parkinson_daily rho=+0.220
+network_state_index,"incremental validity, held-out period",1,WARN,composite not used as a predictor - see §3.9,"chronological 70% split, 87 held-out days: axes R2=+0.1762 vs best component (parkinson_daily) R2=+0.2351; in-sample ranking agrees"
+tooling,"pandas vs hand-written loop, timed",0,INFO,"pandas retained - for alignment, not speed","12.0x faster at n=365 but both under 1 ms; speed-up reaches 79.4x only at n=200,000"
+tooling,sentiment instruments compared on the same corpus,0,INFO,VADER + domain lexicon retained,"4 instruments on 7,131 articles; rule layer removed: rho=0.920 at 29x less runtime; vocabulary swapped (TextBlob): rho=0.274"
+tooling,H1 re-run under every sentiment instrument,0,INFO,null not rejected by any instrument,"Pearson r spans 0.098; smallest p=0.133 (TextBlob (Pattern)); conclusion is instrument-independent, the p-value is not"
+tooling,volatility estimators compared on predictive accuracy,0,INFO,Parkinson retained,leading estimator by next-5d rho: Garman-Klass (+0.275); 21 days violate the no-drift assumption; 0 Garman-Klass breakdowns
+tooling,interval methods compared on H3,0,INFO,moving-block bootstrap retained,"independence-assuming interval is 45% too narrow; block bootstrap [+0.099, +0.447] agrees with Fisher at n_eff=95 [+0.084, +0.456]"
+tooling,"Pearson vs Spearman, decided by normality tests",0,INFO,both reported throughout §3,Shapiro-Wilk rejects normality for 4/4 series entering the correlations; on H3 the two coefficients agree to 0.007
+tooling,hand-rolled statistics validated against known answers,0,INFO,statsmodels and scikit-learn not required,"9/9 pass: PCA vs eigendecomposition, Newey-West vs scipy OLS, AR/Granger/Ljung-Box vs simulated processes, Hedges' g vs closed form"
+tooling,"lemma fallback over-reduction, found and fixed",279,INFO,"FIXED - known_lemmas.txt added, suffix rules guarded","old logic mangled 279 types / 1,281 tokens ('across'->'acros', 'analysis'->'analysi'); fallback now fires on 0 types in this corpus"

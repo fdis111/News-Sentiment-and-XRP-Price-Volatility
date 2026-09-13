@@ -1,0 +1,86 @@
+{
+  "xrp_bitstamp": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.591510+00:00",
+    "rows": 365,
+    "sha256": "74cd9418102b046c87575f28ff60f8b1c7d6561a0c731b3b218d91e18f1a254a",
+    "source": "Bitstamp /api/v2/ohlc/xrpusd (step=86400; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_fear_greed": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.605197+00:00",
+    "rows": 365,
+    "sha256": "2ca2e9dcedb6cedf206af35b3afed0cc204c087f7731afd91552ed3ce26b0c39",
+    "source": "alternative.me /fng/ (format=json; trimmed to 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_gdelt_coverage": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.639044+00:00",
+    "rows": 92,
+    "sha256": "eb0d8e5bd1db220bd830d094735ea84d5dd5dfe27a074f6eae3dc3dd94745d0d",
+    "source": "GDELT DOC 2.0 artlist - per-window acquisition record"
+  },
+  "xrp_gdelt_news": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.631192+00:00",
+    "rows": 8048,
+    "sha256": "b00e0f9dd5abe67c5d6a77ee07344ae5a3a3bcda5a8cd0cbae1650d9ecf8205b",
+    "source": "GDELT DOC 2.0 artlist (query='XRP sourcelang:english'; 4-day windows, maxrecords=250; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_gdelt_tone": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.644874+00:00",
+    "rows": 361,
+    "sha256": "800b86c885d46c4928047cd7e57264e11570d7a29bd13d3255226a8da267475d",
+    "source": "GDELT DOC 2.0 timelinetone (query='XRP sourcelang:english'; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_gdelt_volume": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.650501+00:00",
+    "rows": 361,
+    "sha256": "cdcecb8097da36d69b27d412a1d0e7ee2e462e585b0f0a991e2584137db91d97",
+    "source": "GDELT DOC 2.0 timelinevolraw (query='XRP sourcelang:english'; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_gdelt_volume_broad": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:12:51.759320+00:00",
+    "rows": 361,
+    "sha256": "c4d20dafb73ff0d3182d9824f0f945f4aae3e2bc2bd0d98dd1edd54382660b9f",
+    "source": "GDELT DOC 2.0 timelinevolraw (query='(XRP OR Ripple) sourcelang:english'; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_github_commits": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:29:55.830233+00:00",
+    "rows": 1684,
+    "sha256": "5c1e3a0f7daae5fb544b9087936a1b83dfae4de6a49225de1c51bae8dc76f122",
+    "source": "GitHub /repos/{repo}/commits for 4 XRPLF repositories (2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_github_releases": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:29:55.838112+00:00",
+    "rows": 74,
+    "sha256": "dbb0484d37329e3f1e6e7364de310a2277641b1819b8cbcfe1b3b286adb9ea91",
+    "source": "GitHub /repos/{repo}/releases for 4 XRPLF repositories (trimmed to the study window)"
+  },
+  "xrp_kraken": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.582603+00:00",
+    "rows": 365,
+    "sha256": "dcabc752c0dc723b9f4c2ba014b235a3b0399d7fc691a5c7446857cd5bfe3f84",
+    "source": "Kraken /0/public/OHLC (pair=XRPUSD, interval=1440; 2025-09-01 -> 2026-08-31)"
+  },
+  "xrp_news": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.657823+00:00",
+    "rows": 399,
+    "sha256": "c23dd94a919d9e222f04e89bd1c567936ed15b2a13517530c43251745e0ec589",
+    "source": "NewsAPI /v2/everything (q=XRP, language=en, sortBy=publishedAt; 4 weekly windows ending 2026-06-29) - FROZEN, see note above"
+  },
+  "xrp_onchain": {
+    "provenance": "pre-existing sample; checksum recorded retrospectively",
+    "recorded_at": "2026-09-13T04:05:33.598457+00:00",
+    "rows": 365,
+    "sha256": "4e730b016c1d0f3807ca691fd5e4ef006053b609085793fb445bca16bd59c3a5",
+    "source": "Coin Metrics community /v4/timeseries/asset-metrics (xrp; 10 metrics; 1d; 2025-09-01 -> 2026-08-31)"
+  }
+}

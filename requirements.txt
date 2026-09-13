@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# DSM020 — News Sentiment vs XRP Price Volatility
+# Replicability specification. Versions are pinned to the exact releases that
+# produced the outputs stored in nobook.ipynb.
+#
+# Reproduce from scratch (three commands, no API key, no network needed):
+#
+#     python3.13 -m venv .venv
+#     .venv/bin/python -m pip install -r requirements.txt
+#     .venv/bin/jupyter execute nobook.ipynb
+#
+# Interpreter: Python 3.13.2 (3.11+ required for the type-hint syntax used).
+# Runtime: ~16 s end to end from the cached sample in data_sample/.
+# Full instructions, including how to re-acquire live data, are in the
+# "How to reproduce this notebook" section at the top of nobook.ipynb.
+# ---------------------------------------------------------------------------
+
+# --- Analysis libraries (imported directly by the notebook) ---
+numpy==2.5.0
+pandas==3.0.3
+requests==2.34.2
+python-dotenv==1.2.2
+nltk==3.9.4
+matplotlib==3.11.0
+seaborn==0.13.2
+scipy==1.18.0          # >=1.11 required: stats.false_discovery_control (§3.5)
+
+# Deliberately ABSENT: statsmodels (~15 MB) and scikit-learn (~30 MB). The AR fit,
+# Ljung-Box, cross-correlation, Granger test, Newey-West errors, block bootstrap,
+# Hedges' g, Cronbach's alpha and PC1 are implemented on numpy/scipy instead. §4.0.5
+# gives the reasoning and validates six of the nine against independent routes.
+
+# --- Comparison only: never used to produce a reported result ---
+# §4.0.2 scores the corpus with a sentiment instrument of entirely separate lineage, to
+# test whether H1's answer depends on the instrument. 2.5 MB on top of nltk, which is
+# already required, and it works offline. The notebook degrades gracefully if it is
+# absent: that one comparison is skipped and everything else still runs.
+textblob==0.19.0
+
+# --- Notebook execution runtime ---
+ipykernel==7.3.0
+nbclient==0.11.0
+nbconvert==7.17.1
+
+# --- Optional: the interactive Jupyter UI ---
+# Only needed to *open* the notebook in a browser. Headless execution
+# (`jupyter execute`) needs nbclient alone, so this is left unpinned.
+notebook>=7.0.0
+
+# Note: NLTK's vader_lexicon corpus is vendored under data_sample/nltk_data/, and the
+# lemma map, known-lemma list, stop words and finance lexicon under data_sample/nlp/, so
+# no nltk.download() call and no network access is required at run time. WordNet is NOT
+# a dependency: it is used once by tools_build_nlp_artifacts.py, which is not on the
+# notebook's execution path. See §2.1.1 and §4.0.6.

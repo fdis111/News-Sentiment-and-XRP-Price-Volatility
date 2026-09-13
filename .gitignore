@@ -1,0 +1,11 @@
+.venv
+.env
+CLAUDE.md
+.plan.md
+feedback_integration_plan.md
+final_coursework_plan.md
+nobook_markdown_only_files/
+plan.md
+local/
+w1_decisions.md
+tools_build_nlp_artifacts.py

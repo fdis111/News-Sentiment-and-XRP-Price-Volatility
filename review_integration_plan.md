@@ -274,7 +274,7 @@ mean while the code uses `actual.mean()`, the *test* mean. Simplest correction i
 prose, since test-mean R² is the conventional definition.
 </details>
 
-### W1.5 · Align the instrument comparison — F6
+### W1.5 · Align the instrument comparison — F6  ✅ DONE
 Cell 181 scores the full cleaned corpus (n=357) while describing itself as the identical
 primary specification (n=355, XRP-specific). Point it at the same filtered corpus H1 uses.
 The null survives on either corpus, so nothing is at stake in the result — but a
@@ -285,7 +285,7 @@ Also correct the overclaim: the cell prints that the instruments "do not share a
 vocabulary or rule set between them", but three of the four are VADER-derived. Describe
 them as **four scoring specifications**, of which one (TextBlob) is lexicon-independent.
 
-### W1.6 · Zero polarity ≠ lexicon blindness — F7
+### W1.6 · Zero polarity ≠ lexicon blindness — F7  ✅ DONE
 Cells 72, 123, 173 and 198 read a zero compound score as the lexicon failing to see the
 headline. A zero also arises when recognised terms cancel — the review's example,
 *"XRP faces short-term pressure, OPTO Miner becomes a stable income channel"*, carries
@@ -296,6 +296,74 @@ Add a helper that tests whether *any* token hits the VADER lexicon, then report 
 rate** and **no-lexicon-match rate** as two separate numbers. Drop "false neutrality" and
 "blindness" framing. A zero→non-zero move is not a demonstrated correction without labelled
 ground truth — which leads to the optional extension below.
+
+---
+
+### W1.5 + W1.6 — outcome (done together, one execution)
+
+**W1.5.** Cell 181 now aggregates only `xrp_specific` articles, matching primary H1. All
+four specifications land on n = 355, and row 0 reproduces the headline H1 estimate exactly
+(r = −0.031), which it did not before — the comparison's own baseline now agrees with the
+result it is a comparison against.
+
+| Instrument | n | Pearson r | p |
+|---|---:|---:|---:|
+| VADER + domain lexicon | 355 | −0.031 | 0.559 |
+| VADER as shipped | 355 | −0.010 | 0.851 |
+| dictionary counting (LM-style) | 355 | −0.050 | 0.344 |
+| TextBlob (Pattern) | 355 | +0.070 | 0.186 |
+
+Matches the review's independently reproduced XRP-specific table to three decimals. The null
+survives, as the review said it would. The "they do not share a single vocabulary or rule
+set" claim was replaced: three of four read the same VADER lexicon, two differ only by the
+§2.1.3 domain terms, and only TextBlob is independent of it.
+
+**W1.6.** A `lexicon_matches` helper counts tokens the analyzer actually recognises,
+tokenised through VADER's own `SentiText` so the tokens counted are the tokens scored. Zero
+scores are now decomposed by cause:
+
+| | as shipped | domain-adapted |
+|---|---:|---:|
+| scored exactly 0.0 | 43.8% | 33.8% |
+| — no term recognised at all | **43.5%** | **33.2%** |
+| — recognised terms cancelled | 0.3% | 0.6% |
+
+**Worth being precise about the size of this one.** The conflation the review identified is
+real, and the review's counts reproduce exactly (23 baseline-zero and 42 adapted-zero
+headlines contain lexicon matches, including its `pressure`/`stable` example). But the
+practical effect is 0.3pp: the notebook's "the lexicon recognising nothing at all" was
+overstated, not wrong in substance. The fix is a correctness and framing repair, not a
+finding that changes what H1's null means.
+
+"Rescued from a false neutral" became "moved off a zero score" (727 articles), reported
+beside the 732 genuine vocabulary gaps closed, with an explicit statement that a move off
+zero is not a demonstrated correction without labelled ground truth.
+
+**Narrative:** cells 1 and 198 ("four independent scoring instruments") now say four
+specifications, one independent of the lexicon. Cells 2, 123 and 173 had the *numbers*
+right — 43.8% is genuinely the zero-score rate — but labelled them "falsely neutral"; they
+now name the 43.5% / 33.2% no-match rates where that is the quantity meant.
+
+Blast radius: cells 72, 181 (intended), 101 (the validation-log row text, a consequence of
+the new `log_row` wording), 91 blank line, rest timing noise.
+
+---
+
+## W1 — complete
+
+All six items done. The confirmatory family, in full, after W1.1–W1.6:
+
+| | Hypothesis | Registered statistic | BH-adjusted *p* | Verdict |
+|---|---|---|---:|---|
+| H1 | sentiment → forward volatility | Pearson r = −0.031 | 0.559 | not supported |
+| H2 | regulatory news → volume | Pearson r = −0.056 | 0.391 | not supported |
+| H3 | on-chain activity ↔ volatility | Pearson r = +0.281 | < 0.0001 | **supported** |
+| H4 | developer activity → transaction velocity | Spearman ρ = −0.262 | 0.126 | not supported |
+
+No hypothesis verdict changed across the whole of W1. What changed is that each is now
+computed the way §1.3 said it would be. The two results that did move — the index's held-out
+comparison (W1.4) and the AR order behind the pre-whitened CCF (W1.3) — were both cases
+where a stated pass/fail assertion was falsified rather than a number nudged.
 
 ---
 

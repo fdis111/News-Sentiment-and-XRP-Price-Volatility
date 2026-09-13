@@ -153,7 +153,7 @@ and 51, 82, 103, 177, 179, 203 — all blank-line or timing noise.
 
 ---
 
-### W1.3 · Ljung-Box degrees of freedom — F3
+### W1.3 · Ljung-Box degrees of freedom — F3  ✅ DONE
 `ljung_box` (cell 143) always tests Q against χ²(lags). On fitted AR(p) residuals that is
 anticonservative. Add `model_df: int = 0` and test against χ²(lags − model_df).
 
@@ -166,6 +166,48 @@ Three consequences to handle, not one:
 
 At df=8 the current AR(2) residuals give p = 0.0246, so the existing "residuals pass at 5%"
 assertion in cells 143/149 is false as written and must be rewritten from the new output.
+
+### W1.3 — outcome
+
+`ljung_box` gained `model_df` (default 0) and tests Q against chi-square with
+`lags - model_df`, raising if the lag count does not exceed the fitted order. A module-level
+`DIAGNOSTIC_LAGS = 15` replaced the hard-wired 10, chosen above `fit_ar`'s `max_order` so a
+residual test always has degrees of freedom left, and fixed rather than varied per candidate
+so competing orders face the same diagnostic. `fit_ar`'s inner `whitens()` now charges each
+candidate's own order; cell 149 charges the fitted order on the filtered series. The two raw
+series and the cell 187 self-tests keep `model_df=0`, which is correct — nothing was
+estimated from them.
+
+**The circularity resolved in the direction the review predicted, and further.**
+
+| Quantity | Submitted | Now |
+|---|---|---|
+| Sentiment AR order | AR(2) (AIC 1, escalated to 2) | **AR(8)** (AIC 1, escalated to 8) |
+| Ljung-Box on filtered series | Q = 17.6, p = 0.0624 at df = 10 | **Q = 9.2, p = 0.2418** at df = 7 |
+| Ljung-Box on raw series | Q = 31.5, p = 0.0005 | Q = 44.0, p = 0.0001 |
+| Pre-whitened CCF lag 0 | r = −0.072, n = 356 | r = −0.085, n = 350 |
+| H1 verdict | nothing survives BH | **unchanged** |
+
+The submitted AR(2) filter was passing whiteness at p = 0.0624 only because the test ignored
+the two fitted coefficients; at the correct df it fails, the escalation rule keeps going, and
+AR(8) is the first order that genuinely whitens the series. So this is not a cosmetic df
+correction — **the notebook was cross-correlating imperfectly whitened residuals**, which is
+precisely the failure mode §3.6 exists to prevent. The whiteness claim is now earned rather
+than marginal-and-mismeasured.
+
+The order-8 fit costs six observations of warm-up (n 356 → 350) and every conclusion holds:
+no CCF lag exceeds the band, none survives BH, and Granger is null in both directions.
+
+Cell 147's address pre-whitening shifted with it (one fewer lag past the band in two rows),
+and cell 187's white-noise self-test moved with the lag count. Both still pass.
+
+**Narrative:** no markdown cell hardcoded AR(2) or the old Q values, so nothing was
+falsified. Cell 142's point 2 ("the AR order is chosen by AIC, not assumed") understated the
+procedure once AIC's choice of 1 was overridden to 8, so points 2 and 4 were rewritten to
+describe escalation and the df charge. Deliberately written without the number 8 in it — the
+code prints the selected order, and hardcoding it into prose is how finding 5 happened.
+
+---
 
 ### W1.4 · Selection on the held-out set — F4  ✅ DONE
 

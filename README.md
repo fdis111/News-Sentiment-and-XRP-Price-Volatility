@@ -80,7 +80,9 @@ catches the failures these APIs report _inside_ an HTTP 200 response.
   refuses to rebind a name and returns copies, so the recorded lineage is the lineage that
   ran. 44 stage transitions, each timed and logged.
 - **Automated validation.** Declarative schema contracts plus a reusable check library:
-  **207 checks across 25 stages**, written to `data_sample/validation_report.csv`.
+  **230 logged checks across 26 stages**, written to `data_sample/validation_report.csv`
+  (129 PASS, 56 WARN, 39 INFO, 6 DRILL). A logged row is one recorded check, not necessarily
+  an independent assertion — several stages log the same contract per column.
   Missing-value handling is declared as data (`MISSING_POLICY`); 13 post-conditions run
   _inside_ `Stage.bind`, so a frame that fails what its stage promised never becomes reachable.
 - **Leakage detection (§2.0.1).** Every engineered column's lookahead horizon is _measured_,
@@ -138,7 +140,8 @@ under-powered against sparse leakage before it had ever missed anything real.
 
 ```text
 .
-├── notebook.ipynb                  # the single master notebook (194 cells, 130 functions)
+├── notebook.ipynb                  # the single master notebook (204 cells, 114 top-level
+│                                 #   functions; 139 including nested and methods)
 ├── data_sample/                  # deliverable sample (relative paths throughout)
 │   ├── xrp_*.csv                 #   twelve acquired streams
 │   ├── _manifest.json            #   provenance + SHA-256 per stream, verified on load

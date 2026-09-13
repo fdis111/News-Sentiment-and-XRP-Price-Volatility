@@ -463,7 +463,56 @@ Mostly prose, one substantive addition. Do after W1 so the numbers are final.
 
 ---
 
-## W3 — Narrative/output audit  (F5; the cheap marks)
+## W3 — Narrative/output audit  (F5)  ✅ DONE
+
+All six known contradictions fixed, plus three the review had not listed.
+
+| Cell | Was | Now |
+|---|---|---|
+| 3 | "the five acquired CSVs" | twelve |
+| 85 | CoinGecko 4-hourly candles, "~31 days against the primary measure's 91", "entire 21-day news window" | **Kraken daily high/low, full 365 days** — the whole paragraph was stale |
+| 115 | "~21-day window" | observed on 358 of 365 days |
+| 127 | "2 of 3 events", "+0.009 each", "21-point linear test" | **1 of 3**; −0.0004 / +0.0072 / −0.0157 |
+| 128 | H2 "across all 21 days" | across all 358 days |
+| 137 | "13 days … +0.281 → +0.260" | 20 days … +0.281 → **+0.282**, a shift of 0.001 |
+| 138 | "§2.4 flags 13 days" | flags 20 days |
+| 173 | "Twenty tests were run" | Twenty-two |
+| 190 | "45% too narrow" (×2) | 46% — shifted by W2's RNG draw |
+| README | 194 cells / 130 functions; 207 checks across 25 stages | **204 cells / 114 top-level (139 incl. nested); 230 logged checks across 26 stages**, with the PASS/WARN/INFO/DRILL split and a note that a logged row is not an independent assertion |
+
+**On the "21 days" references.** A naive find-and-replace would have been wrong here. Most of
+the fourteen occurrences are *deliberate* contrasts with the midterm build ("the window moved
+from 21 days to 365", "at the 21 days the midterm build had") or refer to the NewsAPI sample,
+which genuinely spans 21 days. Only three described the **current** study and were wrong:
+cells 115, 127 and 128. The rest were left alone.
+
+**Cell 127 was rewritten, not patched.** Correcting the numbers alone would have left the
+conclusion unsupported: with 1 of 3 events rising and the largest move *downward*, "discrete
+regulatory news tends to be followed by a short-term volatility uptick" is not what the table
+shows. It now says the three headlines show no consistent pattern, notes the largest movement
+is in the opposite direction (consistent with an anticipated, already-priced event), and
+points to §3.3's rule-based classification over all 358 days as the test that carries weight.
+
+**The sweep.** Verified every decimal and percentage in all 101 markdown cells against the
+executed outputs. A global check (does this number appear anywhere?) proved useless — a
+corpus this size contains almost any 2–3 digit decimal — so the check was re-run with a
+locality constraint (±8 cells), leaving 52 candidates across 22 cells. Working through them:
+all are either section references that survived the regex, or legitimate cross-references in
+the abstract and conclusions. Spot-verified against source outputs: Cronbach α 0.749/0.630/
+0.864 → "0.75/0.63/0.86" ✓; PC1 agreement min 0.960 → "r ≥ 0.96" ✓; Parkinson r = 0.791,
+ρ = 0.867 ✓; fear_greed lag-1 0.936 → "0.94" ✓; volatility 0.902 → "0.90" ✓; venue agreement
+r = 1.000000, 0.002 USD, volume ratio 1.09 / 0.32–2.75 ✓; Kraken–Bitstamp r = 0.999986,
+0.021 USD ✓; corpus 50.9%, 3,633 of 7,131 ✓; 3 moves > 100%, largest +291% ✓. **No stale
+number survived.**
+
+The sweep script is kept at `scratchpad/sweep2.py` and is worth re-running after any further
+change — `python sweep2.py 8`.
+
+---
+
+## W3 — original plan text
+
+
 
 Six known contradictions, plus a sweep. Do this **last**, against freshly executed output.
 
